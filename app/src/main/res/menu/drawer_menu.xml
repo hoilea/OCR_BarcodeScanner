@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/homescanai"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        />
+    <item
+        android:id="@+id/single_scan"
+        android:icon="@drawable/barcode_512_single"
+        android:title="Single Scan"
+        />
+    <item
+        android:id="@+id/multi_scan"
+        android:icon="@drawable/barcode_512_multi"
+        android:title="Multi Scan"
+        />
+    <item
+        android:id="@+id/nav_view_list_download"
+        android:icon="@drawable/ic_view_list"
+        android:title="List Download"
+        />
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="Share"
+                />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_send"
+                android:title="Send"
+                />
+        </menu>
+    </item>
+    <item android:title="Account Settings">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="Logout"
+                />
+        </menu>
+    </item>
+</menu>
