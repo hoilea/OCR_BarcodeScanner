@@ -73,6 +73,7 @@ import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphicTracker;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeTrackerFactory;
 import com.muchlish.scan_ai.BarcodeTracker.MyDetector;
+import com.muchlish.scan_ai.ConnectedThread;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.entity.MyResponse;
@@ -87,6 +88,7 @@ import com.muchlish.scan_ai.service.BarcodeDataService;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
 import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
+import com.muchlish.scan_ai.utils.CommunicationsActivity;
 import com.muchlish.scan_ai.utils.SharedUserPreferences;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -116,7 +118,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SingleScanActivity extends AppCompatActivity implements MainView, PermissionCallback, ErrorCallback, NavigationView.OnNavigationItemSelectedListener  {
+public class SingleScanActivity  extends CommunicationsActivity   {
     private static final String TAG = "Multiple Scan";
 
     private static final int RC_HANDLE_GMS = 9001;
@@ -470,6 +472,10 @@ public class SingleScanActivity extends AppCompatActivity implements MainView, P
                         SingleScanActivity.descriptioncode.setText(response.body().getData().getDesc());
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
+                        for (byte b : String.valueOf(valuecode).getBytes()) {
+                            mBluetoothConnection.write(b);
+                            Toast.makeText(getApplicationContext(), valuecode, Toast.LENGTH_LONG).show();
+                        }
                     }else{
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
@@ -578,8 +584,8 @@ public class SingleScanActivity extends AppCompatActivity implements MainView, P
             mPreview.stop();
         }
     }
-    @Override
-    protected void onDestroy() {
+    //@Override
+    public void onDestroy() {
         this.mWakeLock.release();
         if (mPreview != null) {
             mPreview.release();

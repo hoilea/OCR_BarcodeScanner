@@ -41,10 +41,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0-rc01'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     implementation files('libs/poishadow-all.jar');
     implementation 'com.kishan.askpermission:askpermission:1.0.3';
     implementation 'com.android.volley:volley:1.1.0'
+
+    implementation 'com.android.support:appcompat-v7:29.1.1'
+
 }

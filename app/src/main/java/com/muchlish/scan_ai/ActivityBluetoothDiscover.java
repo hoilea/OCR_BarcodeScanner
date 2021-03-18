@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.muchlish.scan_ai.activity.singlescan.SingleScanActivity;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -48,6 +50,8 @@ public class ActivityBluetoothDiscover extends AppCompatActivity {
     private TextView mBluetoothStatus;
     private TextView mBluetoothDevice;
     private TextView mBluetoothConStatus;
+
+    public static String EXTRA_ADDRESS = "device_address";
 
     private final String TAG = ActivityBluetoothDiscover.class.getSimpleName();
 
@@ -243,8 +247,12 @@ public class ActivityBluetoothDiscover extends AppCompatActivity {
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
         try {
-            final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
-            return (BluetoothSocket) m.invoke(device, BT_MODULE_UUID);
+            Intent i = new Intent(ActivityBluetoothDiscover.this, SingleScanActivity.class);
+            //Change the activity.
+            i.putExtra(EXTRA_ADDRESS, device); //this will be received at CommunicationsActivity
+            startActivity(i);
+            //final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
+            //return (BluetoothSocket) m.invoke(device, BT_MODULE_UUID);
         } catch (Exception e) {
             Log.e(TAG, "Could not create Insecure RFComm Connection",e);
         }
