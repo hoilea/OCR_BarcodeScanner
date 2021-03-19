@@ -10,7 +10,7 @@ Copyright 2018  Gunnar Bowman, Emily Boyes, Trip Calihan, Simon D. Levy, Shepher
 MIT License
 */
 
-package com.muchlish.scan_ai.utils;
+package com.muchlish.scan_ai.activity.singlescan;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import com.muchlish.scan_ai.ActivityBluetoothDiscover;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.main.MainView;
 
-public abstract class CommunicationsActivity extends AppCompatActivity implements MainView, PermissionCallback, ErrorCallback, NavigationView.OnNavigationItemSelectedListener{
+public abstract class CommunicationsActivity extends AppCompatActivity implements MainView, PermissionCallback, ErrorCallback, NavigationView.OnNavigationItemSelectedListener {
 
 
     private String mDeviceAddress;
@@ -41,6 +41,7 @@ public abstract class CommunicationsActivity extends AppCompatActivity implement
         Intent newint = getIntent();
         mDeviceAddress = newint.getStringExtra(ActivityBluetoothDiscover.EXTRA_ADDRESS);
 
+        //mDeviceAddress = "00:1A:7D:DA:71:07";
         // Create a connection to this device
         mBluetoothConnection = new CommunicationsTask(this, mDeviceAddress);
         mBluetoothConnection.execute();

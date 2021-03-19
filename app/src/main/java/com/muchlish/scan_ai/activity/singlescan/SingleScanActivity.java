@@ -50,13 +50,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.Detector;
@@ -73,7 +66,6 @@ import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphicTracker;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeTrackerFactory;
 import com.muchlish.scan_ai.BarcodeTracker.MyDetector;
-import com.muchlish.scan_ai.ConnectedThread;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.entity.MyResponse;
@@ -88,7 +80,6 @@ import com.muchlish.scan_ai.service.BarcodeDataService;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
 import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
-import com.muchlish.scan_ai.utils.CommunicationsActivity;
 import com.muchlish.scan_ai.utils.SharedUserPreferences;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -97,8 +88,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,20 +99,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SingleScanActivity  extends CommunicationsActivity   {
+public class SingleScanActivity  extends  CommunicationsActivity {
     private static final String TAG = "Multiple Scan";
 
     private static final int RC_HANDLE_GMS = 9001;
 
     private static final int RC_HANDLE_CAMERA_PERM = 2;
+    public final static int MESSAGE_READ = 2;
+    private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
 
 
     public static final String AutoFocusS = "AutoFocus";
@@ -472,10 +461,12 @@ public class SingleScanActivity  extends CommunicationsActivity   {
                         SingleScanActivity.descriptioncode.setText(response.body().getData().getDesc());
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
-                        for (byte b : String.valueOf(valuecode).getBytes()) {
-                            mBluetoothConnection.write(b);
-                            Toast.makeText(getApplicationContext(), valuecode, Toast.LENGTH_LONG).show();
-                        }
+                        //for (byte b : String.valueOf(valuecode+"\n").getBytes()) {
+                        //    mBluetoothConnection.write(b);
+                        //}
+                        if(mConnectedThread != null) //First check to make sure thread created
+                            mConnectedThread.write(valuecode+"\n");
+                        Toast.makeText(getApplicationContext(), valuecode, Toast.LENGTH_LONG).show();
                     }else{
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
