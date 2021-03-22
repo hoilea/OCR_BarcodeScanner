@@ -1,130 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/topLayout"
-    android:fitsSystemWindows="true"
     android:background="#000"
-    tools:context=".activity.singlescan.SingleScanActivity"
-    >
+    android:fitsSystemWindows="true"
+    android:keepScreenOn="true"
+    android:visibility="visible"
+    tools:context=".activity.singlescan.SingleScanActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+
+        android:visibility="visible">
+
+        <com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:visibility="visible">
+
+            <com.muchlish.scan_ai.ui.camera.GraphicOverlay
+                android:id="@+id/graphicOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+        </com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan>
+
         <View
             android:id="@+id/aftersinglescanbg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/aftersinglescanshape"
-            />
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/aftersinglescancontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_marginBottom="100dp"
             android:elevation="3dp"
-            >
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <TextView
                 android:id="@+id/asstypecode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="type"
                 android:textColor="#FFF"
-                android:textSize="20dp"
-                />
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/assvaluecode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFF"
                 android:text="Value Barcode"
-                android:textSize="26dp"
-                />
+                android:textColor="#FFF"
+                android:textSize="26dp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_marginTop="150dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="150dp"
                 android:orientation="vertical"
-                >
+                android:visibility="gone">
+
                 <LinearLayout
+                    android:id="@+id/seelist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:id="@+id/seelist"
-                    >
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/ic_view_list_white"
                         android:layout_marginRight="10dp"
-                        />
+                        android:background="@drawable/ic_view_list_white" />
+
                     <TextView
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#FFF"
+                        android:layout_gravity="center"
                         android:text="See List Barcode"
-                        android:textSize="18dp"
-                        />
+                        android:textColor="#FFF"
+                        android:textSize="18dp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_margin="10dp"
                     android:layout_width="240dp"
                     android:layout_height="1dp"
+                    android:layout_margin="10dp"
                     android:background="#FFF"
-                    android:orientation="vertical"
-                    />
+                    android:orientation="vertical" />
+
                 <LinearLayout
                     android:id="@+id/continuescan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    >
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/barcode_512_bold_white"
                         android:layout_marginRight="10dp"
-                        />
+                        android:background="@drawable/barcode_512_bold_white" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#FFF"
                         android:text="Continue Scanning"
-                        android:textSize="18dp"
-                        />
+                        android:textColor="#FFF"
+                        android:textSize="18dp" />
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp"
-            >
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="visible"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
             <TextView
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single Scan"
                 android:layout_gravity="center"
+                android:text="Single Scan"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:id="@+id/toolbar_title" />
+                android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
+
         <LinearLayout
             android:id="@+id/linearshapescan"
             android:layout_width="match_parent"
@@ -132,105 +154,98 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:elevation="1dp"
             android:gravity="center"
-            android:paddingVertical="120dp"
             android:orientation="vertical"
-            >
+            android:paddingVertical="120dp"
+            android:visibility="visible">
+
             <View
                 android:id="@+id/rectanglescan"
                 android:layout_width="300dp"
                 android:layout_height="250dp"
-                android:background="@drawable/rectanglescan"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                />
+                android:background="@drawable/rectanglescan"
+                android:visibility="visible" />
         </LinearLayout>
-        <com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan
-            android:id="@+id/preview"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <com.muchlish.scan_ai.ui.camera.GraphicOverlay
-            android:id="@+id/graphicOverlay"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        </com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/linearshapescan"
             android:background="@drawable/aftersinglescanshape"
             android:orientation="vertical"
-            android:paddingTop="20dp"
             android:paddingHorizontal="10dp"
-            android:layout_below="@id/linearshapescan"
-            >
+            android:paddingTop="20dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/typecodetv"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
+                    android:layout_weight="1"
                     android:text="TYPE CODE"
-                    android:textColor="#FFF"
-                    />
+                    android:textAlignment="textStart"
+                    android:textColor="#FFF" />
+
                 <TextView
                     android:id="@+id/valuecodetv"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="VALUE CODE"
                     android:textAlignment="textEnd"
-                    android:textColor="#FFF"
-                    />
+                    android:textColor="#FFF" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <ProgressBar
                     android:id="@+id/progressDescription"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:indeterminateTint="#FFF"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/descriptioncode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="DESCRIPTION"
-                    android:textColor="#FFF"
-                    />
+                    android:textColor="#FFF" />
+
+                <Button
+                    android:id="@+id/btn_OCR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OCR" />
 
             </LinearLayout>
         </LinearLayout>
+
         <Button
+            style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Result Scan"
-            style="@style/CustomButton"
-            android:onClick="PreviewScan"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="25dp"
-            />
+            android:onClick="PreviewScan"
+            android:text="Result Scan" />
     </RelativeLayout>
+
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
 
-        android:id="@+id/nav_view"
+        android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"
-        />
-</androidx.drawerlayout.widget.DrawerLayout>
+        app:menu="@menu/drawer_menu" />
+</LinearLayout>

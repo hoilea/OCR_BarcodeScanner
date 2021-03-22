@@ -66,7 +66,7 @@ import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
 import com.muchlish.scan_ai.activity.login.LoginActivity;
 import com.muchlish.scan_ai.activity.singlechooseactivity.SingleChooseActivity;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
-import com.muchlish.scan_ai.ui.camera.CameraSourcePreview;
+import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
 import com.muchlish.scan_ai.utils.SharedUserPreferences;
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Permiss
     public static final String BarcodeObject = "Barcode";
 
     private CameraSource mCameraSource;
-    private CameraSourcePreview mPreview;
+    private CameraSourcePreviewSingleScan mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Permiss
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        mPreview = (CameraSourcePreviewSingleScan) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);

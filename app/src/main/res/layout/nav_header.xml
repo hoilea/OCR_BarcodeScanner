@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@color/colorPrimary"
+    android:background="@color/login_color"
     android:gravity="bottom"
+    android:orientation="vertical"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    >
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_scanai_round"
-        />
+        android:src="@mipmap/ic_scanai_round" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SCAN A.I"
         android:paddingTop="8dp"
-        android:textColor="#FFF"
-        />
+        android:text="SCAN A.I"
+        android:textColor="#FFF" />
+
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="uberando2015@mail.com"
-        android:textColor="#FFF"
-        />
+        android:text="ADMIN"
+        android:textColor="#FFF" />
 </LinearLayout>

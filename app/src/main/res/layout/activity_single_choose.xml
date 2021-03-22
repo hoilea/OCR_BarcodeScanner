@@ -125,7 +125,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/dimension2d"
+                    android:id="@+id/ocr"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_columnWeight="1"
@@ -152,9 +152,9 @@
                             <ImageView
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="80dp"
-                                android:background="@drawable/barcode2d"
+                                android:background="@drawable/bestbefore"
                                 />
                         </RelativeLayout>
                         <RelativeLayout
@@ -169,7 +169,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Two Dimension (2D)"
+                                android:text="OCR Expired Date"
                                 />
                         </RelativeLayout>
                     </LinearLayout>

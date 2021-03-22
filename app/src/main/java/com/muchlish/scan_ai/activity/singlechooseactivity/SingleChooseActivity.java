@@ -11,20 +11,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.material.navigation.NavigationView;
+import com.muchlish.scan_ai.ActivityBluetoothDiscover;
+import com.muchlish.scan_ai.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
 import com.muchlish.scan_ai.activity.main.MainActivity;
 import com.muchlish.scan_ai.activity.singlescan.SingleScanActivity;
+
+import java.util.Set;
 
 public class SingleChooseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,7 +40,13 @@ public class SingleChooseActivity extends AppCompatActivity implements Navigatio
     private PopupWindow mPopupWindow;
     protected PowerManager.WakeLock mWakeLock;
 
-    private CardView dimension1d,dimension2d;
+    private CardView dimension1d,mocr;
+
+    private static final int RC_OCR_CAPTURE = 9003;
+
+    private Set<BluetoothDevice> mPairedDevices;
+
+    public static String EXTRA_ADDRESS = "device_address";
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -51,7 +64,7 @@ public class SingleChooseActivity extends AppCompatActivity implements Navigatio
         navigationView.setNavigationItemSelectedListener(this);
 
         dimension1d = findViewById(R.id.dimension1d);
-        dimension2d = findViewById(R.id.dimension2d);
+        mocr = findViewById(R.id.ocr);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -66,15 +79,43 @@ public class SingleChooseActivity extends AppCompatActivity implements Navigatio
                 startActivity(intent);
             }
         });
-        dimension2d.setOnClickListener(new View.OnClickListener() {
+        mocr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SingleScanActivity.class);
-                intent.putExtra("dimension","Two Dimension");
-                intent.putExtra("onedimension",false);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), SingleScanActivity.class);
+//                intent.putExtra("dimension","Two Dimension");
+//                intent.putExtra("onedimension",false);
+//                startActivity(intent);
+
+                Intent i = new Intent(SingleChooseActivity.this, OcrCaptureActivity.class);
+                i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                //Change the activity.
+                i.putExtra(EXTRA_ADDRESS, "00:1A:7D:DA:71:07"); //this will be received at CommunicationsActivity
+                startActivityForResult(i, RC_OCR_CAPTURE);
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RC_OCR_CAPTURE) {
+//            if (resultCode == CommonStatusCodes.SUCCESS) {
+//                if (data != null) {
+//                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+//                    statusMessage.setText(R.string.ocr_success);
+//                    textValue.setText(text);
+//                    Log.d(TAG, "Text read: " + text);
+//                } else {
+//                    statusMessage.setText(R.string.ocr_failure);
+//                    Log.d(TAG, "No Text captured, intent data is null");
+//                }
+//            } else {
+//                statusMessage.setText(String.format(getString(R.string.ocr_error),
+//                        CommonStatusCodes.getStatusCodeString(resultCode)));
+//            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

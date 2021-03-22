@@ -66,6 +66,7 @@ import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphicTracker;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeTrackerFactory;
 import com.muchlish.scan_ai.BarcodeTracker.MyDetector;
+import com.muchlish.scan_ai.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.entity.MyResponse;
@@ -107,6 +108,7 @@ import retrofit2.Callback;
 
 public class SingleScanActivity  extends  CommunicationsActivity {
     private static final String TAG = "Multiple Scan";
+    public static String EXTRA_ADDRESS = "device_address";
 
     private static final int RC_HANDLE_GMS = 9001;
 
@@ -136,7 +138,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
     private RecyclerView.Adapter adapter;
     private MainAdapterScan.ItemClickListener itemClickListener;
 
-    private DrawerLayout drawerLayout;
+    private LinearLayout linearLayout;
     public static ArrayList<String> datescan = new ArrayList<>();
     public static ArrayList<String> barcodes = new ArrayList<>();
     public static ArrayList<String> barcodes2 = new ArrayList<>();
@@ -157,6 +159,8 @@ public class SingleScanActivity  extends  CommunicationsActivity {
     public static TextView descriptioncode;
     private ProgressBar progressDescription;
     public static SharedUserPreferences sp;
+
+    private Button mbtnOcr;
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -197,7 +201,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         sp = new SharedUserPreferences(this);
 
-        drawerLayout = findViewById(R.id.topLayout);
+        linearLayout = findViewById(R.id.topLayout);
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
@@ -205,13 +209,15 @@ public class SingleScanActivity  extends  CommunicationsActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        //linearLayout.addDrawerListener(toggle);
+        //toggle.syncState();
 
         timer = new Timer();
         mPreview = findViewById(R.id.preview);
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
+
+        mbtnOcr = findViewById(R.id.btn_OCR);
 
 
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -235,7 +241,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
         seelist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreviewScan(drawerLayout);
+                PreviewScan(linearLayout);
             }
         });
         continuescan.setOnClickListener(new View.OnClickListener() {
@@ -248,14 +254,26 @@ public class SingleScanActivity  extends  CommunicationsActivity {
             }
         });
 
+        mbtnOcr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SingleScanActivity.this, OcrCaptureActivity.class);
+                i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                //Change the activity.
+                i.putExtra(EXTRA_ADDRESS, "00:1A:7D:DA:71:07"); //this will be received at CommunicationsActivity
+                startActivity(i);
+            }
+        });
+
         typecodetv.setText(descsinglescan);
     }
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }else if(previewScanStatus){
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        }
+        if(previewScanStatus){
             mPopupWindow.dismiss();
             previewScanStatus = false;
             rectanglescan.setVisibility(View.VISIBLE);
@@ -290,7 +308,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
             }
         };
 
-        drawerLayout.setOnClickListener(listener);
+        linearLayout.setOnClickListener(listener);
         Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.ok, listener)
@@ -309,7 +327,12 @@ public class SingleScanActivity  extends  CommunicationsActivity {
         }
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(barcodeformat).build();
         MyDetector myDetector = new MyDetector(barcodeDetector);
-        BarcodeGraphic barcodeGraphic = new BarcodeGraphic(mGraphicOverlay,this);
+        BarcodeGraphic barcodeGraphic = new BarcodeGraphic(mGraphicOverlay, this) {
+            @Override
+            public boolean contains(float x, float y) {
+                return false;
+            }
+        };
         BarcodeGraphicTracker barcodeGraphicTracker = new BarcodeGraphicTracker(mGraphicOverlay,barcodeGraphic,this);
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, this);
         barcodeDetector.setProcessor(
@@ -461,11 +484,11 @@ public class SingleScanActivity  extends  CommunicationsActivity {
                         SingleScanActivity.descriptioncode.setText(response.body().getData().getDesc());
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
-                        //for (byte b : String.valueOf(valuecode+"\n").getBytes()) {
-                        //    mBluetoothConnection.write(b);
-                        //}
-                        if(mConnectedThread != null) //First check to make sure thread created
-                            mConnectedThread.write(valuecode+"\n");
+                        for (byte b : String.valueOf(valuecode+"\n").getBytes()) {
+                            mBluetoothConnection.write(b);
+                        }
+                        //if(mConnectedThread != null) //First check to make sure thread created
+                         //   mConnectedThread.write(valuecode+"\n");
                         Toast.makeText(getApplicationContext(), valuecode, Toast.LENGTH_LONG).show();
                     }else{
                         progressDescription.setVisibility(View.GONE);
@@ -852,7 +875,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
             }
         });
 
-        mPopupWindow.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
+        mPopupWindow.showAtLocation(linearLayout, Gravity.CENTER,0,0);
     }
     public static void copyFileOrDirectory(String srcDir, String dstDir) {
 
@@ -957,7 +980,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
                 break;
 
         }
-        drawerLayout.closeDrawer(GravityCompat.START);;
+        //linearLayout.closeDrawer(GravityCompat.START);;
         return true;
     }
     public void AfterSingleScanGagal(View view) {
@@ -1002,7 +1025,7 @@ public class SingleScanActivity  extends  CommunicationsActivity {
 
             }
         });
-        mPopupWindowASS.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
+        mPopupWindowASS.showAtLocation(linearLayout, Gravity.CENTER,0,0);
     }
 
 }

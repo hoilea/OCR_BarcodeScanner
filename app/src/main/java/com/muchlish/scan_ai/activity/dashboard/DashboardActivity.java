@@ -84,8 +84,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setNavigationView();
 
         singleactcv = findViewById(R.id.singleactcv);
-        multiactcv = findViewById(R.id.multiactcv);
-        listdownloadactcv = findViewById(R.id.listdownloadactcv);
+        //multiactcv = findViewById(R.id.multiactcv);
+        //listdownloadactcv = findViewById(R.id.listdownloadactcv);
 
         imgbluetooth = findViewById(R.id.img_bluetooth);
 
@@ -100,20 +100,20 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 startActivity(intent);
             }
         });
-        multiactcv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        listdownloadactcv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ListDownloadActivity.class);
-                startActivity(intent);
-            }
-        });
+//        multiactcv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        listdownloadactcv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), ListDownloadActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         imgbluetooth.setOnClickListener(new View.OnClickListener() {
             @Override

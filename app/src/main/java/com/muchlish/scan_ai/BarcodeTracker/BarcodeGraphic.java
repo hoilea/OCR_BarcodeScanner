@@ -9,7 +9,7 @@ import android.graphics.RectF;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
 
-public class BarcodeGraphic extends GraphicOverlay.Graphic {
+public abstract class BarcodeGraphic extends GraphicOverlay.Graphic {
 
 
     private int mId;
