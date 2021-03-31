@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.muchlish.scan_ai;
+package com.muchlish.scan_ai.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -33,6 +33,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,12 +46,10 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.snackbar.Snackbar;
-import com.muchlish.scan_ai.activity.singlescan.SingleScanActivity;
+import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
 import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
-import com.muchlish.scan_ai.utils.OcrDetectorProcessor;
-import com.muchlish.scan_ai.utils.OcrGraphic;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ import java.io.IOException;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and contents of each TextBlock.
  */
-public final class OcrCaptureActivity extends AppCompatActivity {
+public final class OcrCaptureActivity extends CommunicationsActivity {
     private static final String TAG = "OcrCaptureActivity";
 
     // Intent request code to handle updating play services if needed.
@@ -76,6 +76,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private CameraSourcePreviewSingleScan mPreview;
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
 
+    private TextView typecodetv,valuecodetv,mtv_ocr;
+
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
@@ -90,6 +92,11 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         mPreview = (CameraSourcePreviewSingleScan) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
+        mtv_ocr = findViewById(R.id.valueocrtv);
+        typecodetv = findViewById(R.id.typecodetv);
+        valuecodetv = findViewById(R.id.valuecodetv);
+        typecodetv.setText(getIntent().getStringExtra("code_value"));
+        valuecodetv.setText(getIntent().getStringExtra("code_type"));
 
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
@@ -107,7 +114,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
+        Snackbar.make(mGraphicOverlay, "",
+                //Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
                 Snackbar.LENGTH_INDEFINITE)
                 .show();
     }
@@ -232,7 +240,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * rest of the processing pipeline.
      */
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mPreview != null) {
             mPreview.release();
@@ -337,6 +345,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), text.getValue(), Toast.LENGTH_LONG).show();
                 //setResult(CommonStatusCodes.SUCCESS, data);
                 //finish();
+                mtv_ocr.setText(text.getValue());
+                for (byte b : String.valueOf(text.getValue()+"\n").getBytes()) {
+                    mBluetoothConnection.write(b);
+                }
             }
             else {
                 Log.d(TAG, "text data is null");

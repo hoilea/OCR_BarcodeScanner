@@ -16,15 +16,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
 
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.material.navigation.NavigationView;
 import com.muchlish.scan_ai.ActivityBluetoothDiscover;
-import com.muchlish.scan_ai.OcrCaptureActivity;
+import com.muchlish.scan_ai.utils.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
@@ -130,10 +128,10 @@ public class SingleChooseActivity extends AppCompatActivity implements Navigatio
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_view_list_download:
-                Intent listdownload=new Intent(this, ListDownloadActivity.class);
-                startActivity(listdownload);
-                break;
+//            case R.id.nav_view_list_download:
+//                Intent listdownload=new Intent(this, ListDownloadActivity.class);
+//                startActivity(listdownload);
+//                break;
             case R.id.single_scan:
                 AlertDialog.Builder builder = new AlertDialog.Builder(SingleChooseActivity.this);
                 builder.setTitle("Information")
@@ -141,9 +139,9 @@ public class SingleChooseActivity extends AppCompatActivity implements Navigatio
                         .setCancelable(false)
                         .setPositiveButton("Oke",null).create().show();
                 break;
-            case R.id.multi_scan:
-                Intent singlescan=new Intent(this, MainActivity.class);
-                startActivity(singlescan);
+            case R.id.bluetooth_setting:
+                Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
+                startActivity(intent);
                 break;
             case R.id.homescanai:
                 Intent homescanai=new Intent(this, DashboardActivity.class);

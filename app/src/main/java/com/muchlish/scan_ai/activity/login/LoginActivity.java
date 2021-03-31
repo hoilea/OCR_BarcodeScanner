@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.muchlish.scan_ai.OcrCaptureActivity;
+import com.muchlish.scan_ai.utils.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.entity.Auth;
@@ -27,7 +27,11 @@ import retrofit2.Callback;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText username, password;
     private Button loginButton;
-    private SharedPreferences sp;
+//    private SharedPreferences sp;
+//    private static final String SHARED_PREF_ID = "sharedPrefs";
+//    private static final String TEXT = "text";
+//
+//    private String text ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(this);
+//        loadData();
+//        updateViews();
 
     }
 
@@ -73,6 +79,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(response.body()!=null && response.isSuccessful()){
                             DashboardActivity.sp.saveToken(response.body().getData().getToken());
                             DashboardActivity.sp.setIsLogin(true);
+                            // save id
+                            //saveid(username.getText().toString());
                             //onBackPressed();
                             Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
                             i.putExtra(OcrCaptureActivity.AutoFocus, true);
@@ -91,4 +99,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+//    private void saveid(String _userid)
+//    {
+//        sp = getSharedPreferences(SHARED_PREF_ID,MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//
+//        editor.putString(TEXT,_userid);
+//        editor.apply();
+//    }
+//
+//    private void loadData()
+//    {
+//        sp = getSharedPreferences(SHARED_PREF_ID,MODE_PRIVATE);
+//        text = sp.getString(TEXT,"");
+//
+//    }
+//
+//    private void updateViews()
+//    {
+//        username.setText(text);
+//    }
 }

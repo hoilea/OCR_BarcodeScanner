@@ -15,6 +15,7 @@
  */
 package com.muchlish.scan_ai.utils;
 
+import android.os.SystemClock;
 import android.util.SparseArray;
 
 import com.google.android.gms.vision.Detector;
@@ -48,6 +49,7 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
             TextBlock item = items.valueAt(i);
             OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
             mGraphicOverlay.add(graphic);
+            SystemClock.sleep(150);
         }
     }
 

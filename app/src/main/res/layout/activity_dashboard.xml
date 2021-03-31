@@ -61,73 +61,111 @@
                         android:textSize="28dp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/img_bluetooth"
-                        android:layout_width="75dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        app:srcCompat="@drawable/bluetooth" />
                 </LinearLayout>
+
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bluetooth ID "
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/Bluetooth_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Saved ID "
+                        android:textSize="16dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>s
 
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
-                android:layout_centerVertical="true"
                 android:columnCount="1"
                 android:rowCount="1"
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 android:padding="14dp"
                 >
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/singleactcv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginTop="100dp"
                     android:layout_marginRight="16dp"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="8dp"
+                    android:layout_marginBottom="16dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
-                    >
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:layout_margin="24dp"
-                        >
+                        android:orientation="vertical">
+
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_weight="2"
-                            android:layout_height="0dp">
+                            android:layout_height="0dp"
+                            android:layout_weight="2">
+
                             <ImageView
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
-                                android:background="@drawable/barcode_512_single"
-                                />
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/barcode_512_single" />
                         </RelativeLayout>
+
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:layout_height="0dp">
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
                             <TextView
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:textColor="#475A61"
-                                android:layout_centerVertical="true"
-                                android:layout_centerHorizontal="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
                                 android:text="Barcode OCR Scan"
-                                />
+                                android:textColor="#475A61"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
                         </RelativeLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

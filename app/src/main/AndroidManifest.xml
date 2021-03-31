@@ -32,7 +32,7 @@
 
         <activity android:name=".ActivityBluetoothDiscover" />
         <activity
-            android:name=".OcrCaptureActivity"
+            android:name=".utils.OcrCaptureActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.login.LoginActivity"

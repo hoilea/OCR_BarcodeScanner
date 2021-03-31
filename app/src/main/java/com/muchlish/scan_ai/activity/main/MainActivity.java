@@ -58,6 +58,7 @@ import com.kishan.askpermission.AskPermission;
 import com.kishan.askpermission.ErrorCallback;
 import com.kishan.askpermission.PermissionCallback;
 import com.kishan.askpermission.PermissionInterface;
+import com.muchlish.scan_ai.ActivityBluetoothDiscover;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeTrackerFactory;
 import com.muchlish.scan_ai.R;
@@ -130,10 +131,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Permiss
 
     private boolean previewScanStatus;
 
+
     @SuppressLint("InvalidWakeLockTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         previewScanStatus = false;
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
@@ -608,20 +612,17 @@ public class MainActivity extends AppCompatActivity implements MainView, Permiss
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_view_list_download:
-                Intent listdownload=new Intent(this, ListDownloadActivity.class);
-                startActivity(listdownload);
-                break;
+//            case R.id.nav_view_list_download:
+//                Intent listdownload=new Intent(this, ListDownloadActivity.class);
+//                startActivity(listdownload);
+//                break;
             case R.id.single_scan:
                 Intent singlescan=new Intent(this, SingleChooseActivity.class);
                 startActivity(singlescan);
                 break;
-            case R.id.multi_scan:
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Information")
-                        .setMessage("You are in Multiple Scan Activity")
-                        .setCancelable(false)
-                        .setPositiveButton("Oke",null).create().show();
+            case R.id.bluetooth_setting:
+                Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
+                startActivity(intent);
                 break;
             case R.id.homescanai:
                 Intent homescanai=new Intent(this, DashboardActivity.class);

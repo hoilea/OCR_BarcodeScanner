@@ -2,14 +2,10 @@ package com.muchlish.scan_ai.activity.singlescan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -59,14 +55,12 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.kishan.askpermission.AskPermission;
-import com.kishan.askpermission.ErrorCallback;
-import com.kishan.askpermission.PermissionCallback;
 import com.kishan.askpermission.PermissionInterface;
+import com.muchlish.scan_ai.ActivityBluetoothDiscover;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphicTracker;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeTrackerFactory;
 import com.muchlish.scan_ai.BarcodeTracker.MyDetector;
-import com.muchlish.scan_ai.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
 import com.muchlish.scan_ai.activity.entity.MyResponse;
@@ -74,13 +68,13 @@ import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
 import com.muchlish.scan_ai.activity.main.MainActivity;
 import com.muchlish.scan_ai.activity.main.MainAdapterScan;
 import com.muchlish.scan_ai.activity.main.MainPresenter;
-import com.muchlish.scan_ai.activity.main.MainView;
 import com.muchlish.scan_ai.activity.singlechooseactivity.SingleChooseActivity;
 import com.muchlish.scan_ai.service.ApiClient;
 import com.muchlish.scan_ai.service.BarcodeDataService;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
 import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
+import com.muchlish.scan_ai.utils.OcrCaptureActivity;
 import com.muchlish.scan_ai.utils.SharedUserPreferences;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -106,7 +100,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SingleScanActivity  extends  CommunicationsActivity {
+public class SingleScanActivity  extends CommunicationsActivity {
     private static final String TAG = "Multiple Scan";
     public static String EXTRA_ADDRESS = "device_address";
 
@@ -159,6 +153,9 @@ public class SingleScanActivity  extends  CommunicationsActivity {
     public static TextView descriptioncode;
     private ProgressBar progressDescription;
     public static SharedUserPreferences sp;
+    private GraphicOverlay graphicOverlay;
+
+    private String BluetoothAdderss;
 
     private Button mbtnOcr;
 
@@ -171,6 +168,10 @@ public class SingleScanActivity  extends  CommunicationsActivity {
         afterSingleScan = false;
         timescanruning = false;
         Window window = this.getWindow();
+        graphicOverlay = findViewById(R.id.graphicOverlay);
+        graphicOverlay.setVisibility(View.INVISIBLE);
+
+        BluetoothAdderss = getIntent().getStringExtra("BluetoothAddress");
 
 // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -259,8 +260,10 @@ public class SingleScanActivity  extends  CommunicationsActivity {
             public void onClick(View v) {
                 Intent i = new Intent(SingleScanActivity.this, OcrCaptureActivity.class);
                 i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                i.putExtra("code_value", valuecodetv.getText());
+                i.putExtra("code_type", typecodetv.getText());
                 //Change the activity.
-                i.putExtra(EXTRA_ADDRESS, "00:1A:7D:DA:71:07"); //this will be received at CommunicationsActivity
+                i.putExtra(EXTRA_ADDRESS, BluetoothAdderss); //this will be received at CommunicationsActivity
                 startActivity(i);
             }
         });
@@ -962,17 +965,17 @@ public class SingleScanActivity  extends  CommunicationsActivity {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_view_list_download:
-                Intent listdownload=new Intent(this, ListDownloadActivity.class);
-                startActivity(listdownload);
-                break;
+//            case R.id.nav_view_list_download:
+//                Intent listdownload=new Intent(this, ListDownloadActivity.class);
+//                startActivity(listdownload);
+//                break;
             case R.id.single_scan:
                 Intent singlechoose=new Intent(this, SingleChooseActivity.class);
                 startActivity(singlechoose);
                 break;
-            case R.id.multi_scan:
-                Intent multiscan=new Intent(this, MainActivity.class);
-                startActivity(multiscan);
+            case R.id.bluetooth_setting:
+                Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
+                startActivity(intent);
                 break;
             case R.id.homescanai:
                 Intent homescanai=new Intent(this, DashboardActivity.class);

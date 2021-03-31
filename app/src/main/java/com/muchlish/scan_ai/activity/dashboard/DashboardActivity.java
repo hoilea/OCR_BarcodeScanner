@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
@@ -21,36 +22,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.muchlish.scan_ai.ActivityBluetoothDiscover;
+import com.muchlish.scan_ai.utils.OcrCaptureActivity;
 import com.muchlish.scan_ai.R;
 import com.muchlish.scan_ai.activity.entity.MyResponse;
 import com.muchlish.scan_ai.activity.entity.User;
-import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
 import com.muchlish.scan_ai.activity.login.LoginActivity;
-import com.muchlish.scan_ai.activity.main.MainActivity;
-import com.muchlish.scan_ai.activity.singlechooseactivity.SingleChooseActivity;
+import com.muchlish.scan_ai.activity.singlescan.SingleScanActivity;
 import com.muchlish.scan_ai.service.ApiClient;
 import com.muchlish.scan_ai.service.AuthService;
 import com.muchlish.scan_ai.utils.SharedUserPreferences;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
+
+import static com.muchlish.scan_ai.ActivityBluetoothDiscover.CHECK_ID;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,10 +47,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private PopupWindow mPopupWindow;
     protected PowerManager.WakeLock mWakeLock;
 
-    private CardView singleactcv,multiactcv,listdownloadactcv;
-    private ImageView imgbluetooth;
+    private CardView singleactcv ;
 
     public static SharedUserPreferences sp;
+
+    public static String EXTRA_ADDRESS = "device_address";
+    private static final int RC_OCR_CAPTURE = 9003;
+
+    public static SharedPreferences sp_bluetooth;
+    private static final String SHARED_PREF_ID = "sharedPrefs";
+    private static final String TEXT = "text";
+    private static final String TEXT_ADDRESS = "text";
+    private String text ;
+    private TextView b_id;
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -73,8 +70,28 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
+        String bluetooth_address = getIntent().getStringExtra("bluethoot_address");
+        String check_id = getIntent().getStringExtra("check_id");
+        b_id = findViewById(R.id.Bluetooth_id);
+        b_id.setText(check_id);
+        if(b_id.getText().toString().equals("1"))
+        {
+            //b_id.setText(bluetooth_address);
+            saveid(getIntent().getStringExtra("bluethoot_address"));
+        }
+        else
+        {
+            loadData();
+            updateViews();
+        }
+
         sp = new SharedUserPreferences(this);
         checkLogin();
+
+//        b_id.setText(getIntent().getStringExtra("check_id"));
+
+
+
 
         drawerLayout = findViewById(R.id.topLayout);
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -87,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //multiactcv = findViewById(R.id.multiactcv);
         //listdownloadactcv = findViewById(R.id.listdownloadactcv);
 
-        imgbluetooth = findViewById(R.id.img_bluetooth);
+        //imgbluetooth = findViewById(R.id.img_bluetooth);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -96,8 +113,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         singleactcv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SingleChooseActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), SingleChooseActivity.class);
+//                startActivity(intent);
+                Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+                i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                //Change the activity.
+                i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+                i.putExtra("BluetoothAddress", b_id.getText());
+                startActivity(i);
             }
         });
 //        multiactcv.setOnClickListener(new View.OnClickListener() {
@@ -115,13 +138,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 //            }
 //        });
 
-        imgbluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
-                startActivity(intent);
-            }
-        });
+        //b_id.setText("edvan nys");
+        //saveid("edvan nys");
 
     }
 
@@ -141,18 +159,21 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_view_list_download:
-                Intent listdownload=new Intent(this, ListDownloadActivity.class);
-                startActivity(listdownload);
-                break;
+
             case R.id.single_scan:
-                Intent singlescan=new Intent(this, SingleChooseActivity.class);
-                startActivity(singlescan);
+//                Intent singlescan=new Intent(this, SingleChooseActivity.class);
+//                startActivity(singlescan);
+                Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+                i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                //Change the activity.
+                i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+                startActivity(i);
                 break;
-            case R.id.multi_scan:
-                Intent multiscan=new Intent(this, MainActivity.class);
-                startActivity(multiscan);
+            case R.id.bluetooth_setting:
+                Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
+                startActivity(intent);
                 break;
+
             case R.id.homescanai:
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
                 builder.setTitle("Information")
@@ -237,4 +258,27 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(new Intent(this, LoginActivity.class));
         }
     }
+    private void saveid(String _bluetoothAddress)
+    {
+        sp_bluetooth = getSharedPreferences(SHARED_PREF_ID,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp_bluetooth.edit();
+
+        editor.putString(TEXT_ADDRESS,_bluetoothAddress);
+        editor.apply();
+        loadData();
+        updateViews();
+    }
+
+    private void loadData()
+    {
+        sp_bluetooth = getSharedPreferences(SHARED_PREF_ID,MODE_PRIVATE);
+        text = sp_bluetooth.getString(TEXT_ADDRESS,"no save bluetooth id");
+
+    }
+
+    private void updateViews()
+    {
+        b_id.setText(text);
+    }
+
 }

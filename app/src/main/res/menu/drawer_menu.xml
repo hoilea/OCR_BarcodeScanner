@@ -14,15 +14,16 @@
         android:title="Single Scan"
         />
     <item
-        android:id="@+id/multi_scan"
-        android:icon="@drawable/barcode_512_multi"
-        android:title="Multi Scan"
+        android:id="@+id/bluetooth_setting"
+        android:icon="@drawable/bluetooth"
+        android:title="Bluetooth Setting "
         />
     <item
-        android:id="@+id/nav_view_list_download"
-        android:icon="@drawable/ic_view_list"
-        android:title="List Download"
+        android:id="@+id/bluetooth_id"
+        android:icon="@drawable/bluetooth"
+        android:title="--- "
         />
+
     <item android:title="Communicate">
         <menu>
             <item
