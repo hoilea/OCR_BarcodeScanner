@@ -157,7 +157,7 @@ public class SingleScanActivity  extends CommunicationsActivity {
 
     private String BluetoothAdderss;
 
-    private Button mbtnOcr;
+    private Button mbtnOcr,mbtnHome;
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -219,6 +219,7 @@ public class SingleScanActivity  extends CommunicationsActivity {
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
 
         mbtnOcr = findViewById(R.id.btn_OCR);
+        mbtnHome = findViewById(R.id.btn_home);
 
 
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -264,6 +265,14 @@ public class SingleScanActivity  extends CommunicationsActivity {
                 i.putExtra("code_type", typecodetv.getText());
                 //Change the activity.
                 i.putExtra(EXTRA_ADDRESS, BluetoothAdderss); //this will be received at CommunicationsActivity
+                startActivity(i);
+            }
+        });
+
+        mbtnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(i);
             }
         });
@@ -487,9 +496,9 @@ public class SingleScanActivity  extends CommunicationsActivity {
                         SingleScanActivity.descriptioncode.setText(response.body().getData().getDesc());
                         progressDescription.setVisibility(View.GONE);
                         descriptioncode.setVisibility(View.VISIBLE);
-                        for (byte b : String.valueOf(valuecode+"\n").getBytes()) {
-                            mBluetoothConnection.write(b);
-                        }
+//                        for (byte b : String.valueOf(valuecode+"\n").getBytes()) {
+//                            mBluetoothConnection.write(b);
+//                        }
                         //if(mConnectedThread != null) //First check to make sure thread created
                          //   mConnectedThread.write(valuecode+"\n");
                         Toast.makeText(getApplicationContext(), valuecode, Toast.LENGTH_LONG).show();

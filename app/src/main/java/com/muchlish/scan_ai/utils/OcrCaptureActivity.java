@@ -33,6 +33,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,10 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.snackbar.Snackbar;
+import com.muchlish.scan_ai.ActivityBluetoothDiscover;
 import com.muchlish.scan_ai.R;
+import com.muchlish.scan_ai.activity.dashboard.DashboardActivity;
+import com.muchlish.scan_ai.activity.singlescan.SingleScanActivity;
 import com.muchlish.scan_ai.ui.camera.CameraSource;
 import com.muchlish.scan_ai.ui.camera.CameraSourcePreviewSingleScan;
 import com.muchlish.scan_ai.ui.camera.GraphicOverlay;
@@ -77,6 +81,7 @@ public final class OcrCaptureActivity extends CommunicationsActivity {
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
 
     private TextView typecodetv,valuecodetv,mtv_ocr;
+    private Button mbtnOcr,mbtnHome;
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -95,9 +100,12 @@ public final class OcrCaptureActivity extends CommunicationsActivity {
         mtv_ocr = findViewById(R.id.valueocrtv);
         typecodetv = findViewById(R.id.typecodetv);
         valuecodetv = findViewById(R.id.valuecodetv);
-        typecodetv.setText(getIntent().getStringExtra("code_value"));
-        valuecodetv.setText(getIntent().getStringExtra("code_type"));
+        typecodetv.setText(getIntent().getStringExtra("code_type"));
+        valuecodetv.setText(getIntent().getStringExtra("code_value"));
 
+        mbtnHome = findViewById(R.id.btn_home);
+        mbtnOcr = findViewById(R.id.btn_OCR);
+        mbtnOcr.setText("SEND");
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
         boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
@@ -114,10 +122,28 @@ public final class OcrCaptureActivity extends CommunicationsActivity {
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(mGraphicOverlay, "",
-                //Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
-                Snackbar.LENGTH_INDEFINITE)
-                .show();
+//        Snackbar.make(mGraphicOverlay, "",
+//                //Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
+//                Snackbar.LENGTH_INDEFINITE)
+//                .show();
+
+        mbtnOcr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String send_value = valuecodetv.getText()+"#"+mtv_ocr.getText();
+                for (byte b : String.valueOf(send_value+"\n").getBytes()) {
+                    mBluetoothConnection.write(b);
+                }
+            }
+        });
+
+        mbtnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     /**
@@ -345,10 +371,10 @@ public final class OcrCaptureActivity extends CommunicationsActivity {
                 Toast.makeText(getApplicationContext(), text.getValue(), Toast.LENGTH_LONG).show();
                 //setResult(CommonStatusCodes.SUCCESS, data);
                 //finish();
-                mtv_ocr.setText(text.getValue());
-                for (byte b : String.valueOf(text.getValue()+"\n").getBytes()) {
-                    mBluetoothConnection.write(b);
-                }
+                mtv_ocr.setText(text.getValue().replaceAll("[^0-9]", ""));
+//                for (byte b : String.valueOf(text.getValue()+"\n").getBytes()) {
+//                    mBluetoothConnection.write(b);
+//                }
             }
             else {
                 Log.d(TAG, "text data is null");
