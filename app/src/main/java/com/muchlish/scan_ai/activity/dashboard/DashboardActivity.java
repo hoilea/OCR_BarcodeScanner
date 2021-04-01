@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.muchlish.scan_ai.ActivityBluetoothDiscover;
@@ -115,12 +116,24 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), SingleChooseActivity.class);
 //                startActivity(intent);
-                Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
-                i.putExtra(OcrCaptureActivity.AutoFocus, true);
-                //Change the activity.
-                i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
-                i.putExtra("BluetoothAddress", b_id.getText());
-                startActivity(i);
+                if (b_id.getText().equals("no save bluetooth id"))
+                {
+                    Toast.makeText(DashboardActivity.this, "Please Select Bluetooth Device First", Toast.LENGTH_SHORT).show();
+                }
+                else if( b_id.getText().length() >15)
+                {
+                    Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+                    //i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                    //Change the activity.
+                    //i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+                    i.putExtra("BluetoothAddress", b_id.getText());
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(DashboardActivity.this, "Please Select Bluetooth Device First", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 //        multiactcv.setOnClickListener(new View.OnClickListener() {

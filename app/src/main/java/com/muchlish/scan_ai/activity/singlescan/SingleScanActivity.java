@@ -2,6 +2,7 @@ package com.muchlish.scan_ai.activity.singlescan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -55,6 +56,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.kishan.askpermission.AskPermission;
+import com.kishan.askpermission.ErrorCallback;
+import com.kishan.askpermission.PermissionCallback;
 import com.kishan.askpermission.PermissionInterface;
 import com.muchlish.scan_ai.ActivityBluetoothDiscover;
 import com.muchlish.scan_ai.BarcodeTracker.BarcodeGraphic;
@@ -68,6 +71,7 @@ import com.muchlish.scan_ai.activity.listdownload.ListDownloadActivity;
 import com.muchlish.scan_ai.activity.main.MainActivity;
 import com.muchlish.scan_ai.activity.main.MainAdapterScan;
 import com.muchlish.scan_ai.activity.main.MainPresenter;
+import com.muchlish.scan_ai.activity.main.MainView;
 import com.muchlish.scan_ai.activity.singlechooseactivity.SingleChooseActivity;
 import com.muchlish.scan_ai.service.ApiClient;
 import com.muchlish.scan_ai.service.BarcodeDataService;
@@ -100,7 +104,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SingleScanActivity  extends CommunicationsActivity {
+public class SingleScanActivity  extends AppCompatActivity implements MainView, PermissionCallback, ErrorCallback, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Multiple Scan";
     public static String EXTRA_ADDRESS = "device_address";
 

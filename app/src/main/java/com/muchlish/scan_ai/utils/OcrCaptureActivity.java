@@ -140,6 +140,7 @@ public final class OcrCaptureActivity extends CommunicationsActivity {
         mbtnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBluetoothConnection.disconnect();
                 Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(i);
             }
