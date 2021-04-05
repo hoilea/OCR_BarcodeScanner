@@ -34,7 +34,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="200dp"
                 android:layout_weight="1">
 
                 <LinearLayout
@@ -106,7 +106,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>s
+            </RelativeLayout>
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="50dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:clickable="true"
