@@ -176,11 +176,20 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             case R.id.single_scan:
 //                Intent singlescan=new Intent(this, SingleChooseActivity.class);
 //                startActivity(singlescan);
-                Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
-                i.putExtra(OcrCaptureActivity.AutoFocus, true);
-                //Change the activity.
-                i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
-                startActivity(i);
+//                Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+//                i.putExtra(OcrCaptureActivity.AutoFocus, true);
+//                //Change the activity.
+//                i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+//                startActivity(i);
+
+                    Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+                    //i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                    //Change the activity.
+                    //i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+                    i.putExtra("BluetoothAddress", b_id.getText());
+                    startActivity(i);
+
+
                 break;
             case R.id.bluetooth_setting:
                 Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
