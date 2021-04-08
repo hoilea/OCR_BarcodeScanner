@@ -10,7 +10,8 @@
     android:fitsSystemWindows="true"
     android:keepScreenOn="true"
     android:visibility="visible"
-    tools:context=".activity.singlescan.SingleScanActivity">
+    tools:context=".activity.singlescan.SingleScanActivity"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -151,11 +152,11 @@
             android:id="@+id/linearshapescan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_below="@+id/toolbar"
             android:elevation="1dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingVertical="120dp"
+            android:paddingVertical="80dp"
             android:visibility="visible">
 
             <View
@@ -251,6 +252,9 @@
                     android:text="OCR" />
 
             </LinearLayout>
+
+
+
         </LinearLayout>
 
         <Button
