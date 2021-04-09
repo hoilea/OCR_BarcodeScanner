@@ -33,26 +33,31 @@
         <activity android:name=".ActivityBluetoothDiscover" />
         <activity
             android:name=".utils.OcrCaptureActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.singlechooseactivity.SingleChooseActivity"
             android:theme="@style/ListDownloadTheme.NoActionBar" />
         <activity
             android:name=".activity.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.singlescan.SingleScanActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.listdownload.ListDownloadActivity"
             android:theme="@style/ListDownloadTheme.NoActionBar" />
         <activity
             android:name=".activity.dashboard.DashboardActivity"
-            android:theme="@style/ListDownloadTheme.NoActionBar">
+            android:theme="@style/ListDownloadTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
