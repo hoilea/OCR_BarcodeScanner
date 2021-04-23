@@ -48,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private PopupWindow mPopupWindow;
     protected PowerManager.WakeLock mWakeLock;
 
-    private CardView singleactcv ;
+    private CardView singleactcv,dimension2d ;
 
     public static SharedUserPreferences sp;
 
@@ -102,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setNavigationView();
 
         singleactcv = findViewById(R.id.singleactcv);
+        dimension2d = findViewById(R.id.dimension2d);
         //multiactcv = findViewById(R.id.multiactcv);
         //listdownloadactcv = findViewById(R.id.listdownloadactcv);
 
@@ -154,6 +155,33 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         //b_id.setText("edvan nys");
         //saveid("edvan nys");
 
+        dimension2d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), SingleChooseActivity.class);
+//                startActivity(intent);
+                if (b_id.getText().equals("no save bluetooth id"))
+                {
+                    Toast.makeText(DashboardActivity.this, "Please Select Bluetooth Device First", Toast.LENGTH_SHORT).show();
+                }
+                else if( b_id.getText().length() >15)
+                {
+                    Intent i = new Intent(DashboardActivity.this, SingleScanActivity.class);
+                    //i.putExtra(OcrCaptureActivity.AutoFocus, true);
+                    //Change the activity.
+                    //i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
+                    i.putExtra("BluetoothAddress", b_id.getText());
+                    i.putExtra("onedimension",false);
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(DashboardActivity.this, "Please Select Bluetooth Device First", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
 
@@ -188,9 +216,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     //i.putExtra(EXTRA_ADDRESS, b_id.getText()); //this will be received at CommunicationsActivity
                     i.putExtra("BluetoothAddress", b_id.getText());
                     startActivity(i);
-
-
                 break;
+
             case R.id.bluetooth_setting:
                 Intent intent = new Intent(getApplicationContext(), ActivityBluetoothDiscover.class);
                 startActivity(intent);

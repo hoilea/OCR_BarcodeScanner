@@ -148,7 +148,7 @@ public class SingleScanActivity  extends AppCompatActivity implements MainView, 
 
     private static final int REQUEST_PERMISSIONS = 20;
 
-    private boolean previewScanStatus,afterSingleScan,timescanruning,onedimension;
+    private boolean previewScanStatus,afterSingleScan,timescanruning,onedimension,twodimension;
     protected TextView typecodetv,valuecodetv,asstypecode,assvaluecode;
     private String sessionCode = "";
     private View rectanglescan,aftersinglescanbg;
